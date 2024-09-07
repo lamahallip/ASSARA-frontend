@@ -1,0 +1,32 @@
+<div class="position-absolute z-2 mt-3 toast-container">
+
+  @for(toast of toastService.toasts; track toast) {
+
+    <ngb-toast
+      [class]="toast.classname"
+      [autohide]="true"
+      [delay]="2000"
+      (hiden)="toastService.remove(toast)">
+      {{ toast.body }}
+    </ngb-toast>
+  }
+  
+</div>
+
+<div class="container-fluid pt-3 vh-100">
+  <div class="row height-main-row">
+    <div class="navigation d-none d-sm-none d-md-block col-md-3 col-xl-2 h-100 pe-2">
+      <app-navbar></app-navbar>
+      <app-collection></app-collection>
+    </div>
+    <div class="col-12 col-sm-12 col-md-9 col-xl-10 h-100 ps-0">
+      <app-header></app-header>
+      <div class="full-height-main-content rounded-bottom-2 overflow-scroll bg-dark p-3">
+        <router-outlet>
+          
+        </router-outlet>
+      </div>
+
+    </div>
+  </div>
+</div>
