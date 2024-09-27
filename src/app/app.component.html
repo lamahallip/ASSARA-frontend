@@ -5,7 +5,7 @@
     <ngb-toast
       [class]="toast.classname"
       [autohide]="true"
-      [delay]="2000"
+      [delay]="3000"
       (hiden)="toastService.remove(toast)">
       {{ toast.body }}
     </ngb-toast>
@@ -22,9 +22,7 @@
     <div class="col-12 col-sm-12 col-md-9 col-xl-10 h-100 ps-0">
       <app-header></app-header>
       <div class="full-height-main-content rounded-bottom-2 overflow-scroll bg-dark p-3">
-        <router-outlet>
-          
-        </router-outlet>
+        <router-outlet></router-outlet>
       </div>
 
     </div>

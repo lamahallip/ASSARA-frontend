@@ -12,7 +12,7 @@ export interface PriceVO {
     value?: string;
 }
 
-export interface CategorieVO {
+export interface CategoryVO {
     value?: string;
 }
 
@@ -30,10 +30,10 @@ export interface DescriptionVO {
 
 export interface ProductBase {
     publicId?: string;
-    author?: AuthorVO;
     title?: TitleVO;
+    author?: AuthorVO;
     price?: PriceVO;
-    categories?: CategorieVO;
+    category?: CategoryVO;
     country?: CountryVO;
     city?: CityVO;
     description?: DescriptionVO;

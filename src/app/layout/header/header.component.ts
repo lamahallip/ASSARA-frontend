@@ -2,13 +2,13 @@ import { Component, effect, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { Location } from '@angular/common';
 import { User } from '../../service/model/user.model';
-import { fontAwesomeIcons } from '../../shared/font-awesome-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports:[FontAwesomeModule],
+  imports:[FontAwesomeModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

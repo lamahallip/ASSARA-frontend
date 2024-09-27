@@ -11,18 +11,21 @@ export class ProductService {
 
   http : HttpClient = inject(HttpClient)
 
+  // this is signal for state
   add$ : WritableSignal<State<Product, HttpErrorResponse>> = 
     signal(State.Builder<Product, HttpErrorResponse>().forInit().build());
-
+    
   addSignal: Signal<State<Product, HttpErrorResponse>> = computed(() => this.add$());
 
-  addSong(product : Product) : void {
+  // Method to add product to backend api
+  addProduct(product : Product) : void {
     const formData = new FormData();
     formData.append('image', product.image!);
     const clone = structuredClone(product);
     clone.image = undefined;
     formData.append('dto', JSON.stringify(clone));
-    this.http.post<Product>(`${environment.API_URL}/api/songs`, formData).subscribe({
+    console.log(formData)
+    this.http.post<Product>(`${environment.API_URL}/api/products`, formData).subscribe({
       next: (product: Product) => this.add$.set(State.Builder<Product, HttpErrorResponse>().forSuccess(product).build()),
       error: (error: HttpErrorResponse) => this.add$.set(State.Builder<Product, HttpErrorResponse>().forError(error).build())
     })
@@ -31,8 +34,6 @@ export class ProductService {
   reset() : void {
     this.add$.set(State.Builder<Product, HttpErrorResponse>().forInit().build())
   }
-
-
 
   constructor() { }
 }
