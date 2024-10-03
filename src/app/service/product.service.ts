@@ -1,13 +1,16 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { State } from './model/state.model';
 import { Product } from './model/product.model';
 import { environment } from '../../environments/environment';
+import { catchError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+
+  // API_URL_BASE : string = 'localhost:8090'
 
   http : HttpClient = inject(HttpClient)
 
@@ -29,6 +32,10 @@ export class ProductService {
       next: (product: Product) => this.add$.set(State.Builder<Product, HttpErrorResponse>().forSuccess(product).build()),
       error: (error: HttpErrorResponse) => this.add$.set(State.Builder<Product, HttpErrorResponse>().forError(error).build())
     })
+  }
+
+  addNewProduct(product: Product) : Observable<Product> {
+    return this.http.post<Product>(`${environment.API_URL}/api/products`, product, { headers: new HttpHeaders({'Content-Type':  'application/json'})} ).pipe()
   }
 
   reset() : void {
