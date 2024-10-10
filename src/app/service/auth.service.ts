@@ -21,7 +21,7 @@ export class AuthService {
   fetchUser = computed(() => this.fetchUser$())
 
   fetch(): void {
-    this.http.get<User>(`${environment.API_URL}/api/get-authenticated-user`).subscribe(
+    this.http.get<User>(`/api/get-authenticated-user`).subscribe(
       {
         next: (user: User) => this.fetchUser$.set(State.Builder<User, HttpErrorResponse>().forSuccess(user).build()),
         error: (error: HttpErrorResponse) => {

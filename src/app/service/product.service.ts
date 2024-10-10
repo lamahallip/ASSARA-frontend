@@ -10,7 +10,7 @@ import { catchError, Observable } from 'rxjs';
 })
 export class ProductService {
 
-  // API_URL_BASE : string = 'localhost:8090'
+  //private api_base_url : string;
 
   http : HttpClient = inject(HttpClient)
 
@@ -28,19 +28,26 @@ export class ProductService {
     clone.image = undefined;
     formData.append('dto', JSON.stringify(clone));
     console.log(formData)
-    this.http.post<Product>(`${environment.API_URL}/api/products`, formData).subscribe({
+    this.httpClient.post<Product>(`/api/products`, formData).subscribe({
       next: (product: Product) => this.add$.set(State.Builder<Product, HttpErrorResponse>().forSuccess(product).build()),
       error: (error: HttpErrorResponse) => this.add$.set(State.Builder<Product, HttpErrorResponse>().forError(error).build())
     })
   }
 
   addNewProduct(product: Product) : Observable<Product> {
-    return this.http.post<Product>(`${environment.API_URL}/api/products`, product, { headers: new HttpHeaders({'Content-Type':  'application/json'})} ).pipe()
+    const formData = new FormData();
+    formData.append('image', product.image!);
+    const clone = structuredClone(product);
+    clone.image = undefined;
+    formData.append('dto', JSON.stringify(clone));
+    return this.httpClient.post<Product>(`/api/products`, formData, { headers: new HttpHeaders({'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryG8vpVejPYc8E16By'})}).pipe()
   }
 
   reset() : void {
     this.add$.set(State.Builder<Product, HttpErrorResponse>().forInit().build())
   }
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) {
+    // this.api_base_url = "http://localhost:8090"
+   }
 }
