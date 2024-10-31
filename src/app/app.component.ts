@@ -7,13 +7,12 @@ import { CollectionComponent } from "./layout/collection/collection.component";
 import { HeaderComponent } from "./layout/header/header.component";
 import { ToastService } from './service/toast.service';
 import {NgbModal, NgbModalRef, NgbToast} from "@ng-bootstrap/ng-bootstrap";
-import { AddProductComponent } from "./add-product/add-product.component";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FontAwesomeModule, NavbarComponent, CollectionComponent, HeaderComponent, NgbToast, AddProductComponent],
+  imports: [RouterOutlet, FontAwesomeModule, NavbarComponent, CollectionComponent, HeaderComponent, NgbToast],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

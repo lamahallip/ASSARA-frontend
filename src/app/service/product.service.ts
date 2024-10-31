@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { State } from './model/state.model';
-import { Product } from './model/product.model';
+import { Product, ReadProduct } from './model/product.model';
 import { environment } from '../../environments/environment';
 import { catchError, Observable } from 'rxjs';
 
@@ -10,44 +10,45 @@ import { catchError, Observable } from 'rxjs';
 })
 export class ProductService {
 
-  //private api_base_url : string;
-
   http : HttpClient = inject(HttpClient)
 
   // this is signal for state
-  add$ : WritableSignal<State<Product, HttpErrorResponse>> = 
+  private add$ : WritableSignal<State<Product, HttpErrorResponse>> = 
     signal(State.Builder<Product, HttpErrorResponse>().forInit().build());
     
   addSignal: Signal<State<Product, HttpErrorResponse>> = computed(() => this.add$());
 
+  private getAll$ : WritableSignal<State<Array<ReadProduct>, HttpErrorResponse>> =
+    signal(State.Builder<Array<ReadProduct>, HttpErrorResponse>().forInit().build());
+  
+  getAllSignal: Signal<State<Array<ReadProduct>, HttpErrorResponse>> = computed(() => this.getAll$());
+
   // Method to add product to backend api
-  addProduct(product : Product) : void {
+  addNewProduct(product : Product) : void {
     const formData = new FormData();
     formData.append('image', product.image!);
     const clone = structuredClone(product);
     clone.image = undefined;
     formData.append('dto', JSON.stringify(clone));
     console.log(formData)
-    this.httpClient.post<Product>(`/api/products`, formData).subscribe({
+    this.http.post<Product>(`${environment.API_URL}/api/products`, formData).subscribe({
       next: (product: Product) => this.add$.set(State.Builder<Product, HttpErrorResponse>().forSuccess(product).build()),
       error: (error: HttpErrorResponse) => this.add$.set(State.Builder<Product, HttpErrorResponse>().forError(error).build())
     })
   }
 
-  addNewProduct(product: Product) : Observable<Product> {
-    const formData = new FormData();
-    formData.append('image', product.image!);
-    const clone = structuredClone(product);
-    clone.image = undefined;
-    formData.append('dto', JSON.stringify(clone));
-    return this.httpClient.post<Product>(`/api/products`, formData, { headers: new HttpHeaders({'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryG8vpVejPYc8E16By'})}).pipe()
-  }
 
   reset() : void {
     this.add$.set(State.Builder<Product, HttpErrorResponse>().forInit().build())
   }
 
-  constructor(private httpClient: HttpClient) {
-    // this.api_base_url = "http://localhost:8090"
-   }
+
+  getAll() : void {
+    this.http.get<Array<ReadProduct>>(`${environment.API_URL}/api/products`).subscribe({
+      next: (products : ReadProduct[]) => this.getAll$.set(State.Builder<Array<ReadProduct>, HttpErrorResponse>().forSuccess(products).build()),
+      error: (err : HttpErrorResponse) => this.getAll$.set(State.Builder<Array<ReadProduct>, HttpErrorResponse>().forError(err).build())
+    })
+  }
+
+  constructor() {}
 }

@@ -9,5 +9,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(
       withXsrfConfiguration({cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN'})
-    )],
+    ),
+    AnimationEffect //provideAnimation()
+  ],
 };

@@ -43,3 +43,9 @@ export interface Product extends ProductBase {
     image?: File;
     imageContentType?: string;
 }
+
+export interface ReadProduct extends ProductBase {
+    image?: File;
+    imageContentType?: string;
+    favorite: boolean;
+}
