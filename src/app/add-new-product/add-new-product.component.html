@@ -1,0 +1,186 @@
+<div class="container-fluid flex-column d-flex">
+
+    <h1 class="text-start mb-4">Add a new product</h1>
+
+    <div class="row">
+
+        <div class="col-md-5">
+
+            <!-- Title form______________________________________________________________________________________________________________-->
+
+            <form id="createProductForm" (ngSubmit)="create()" [formGroup]="createProductForm" enctype="multipart/form-data" method="post">
+                <div class="form-floating mb-3 text-secondary">
+                    <input
+                        class="form-control" id ='title' type="text" 
+                        [class.is-valid]="createProductForm.get('title')?.valid"
+                        [class.is-invalid]="createProductForm.get('title')?.dirty && createProductForm.get('title')?.invalid"
+                        placeholder="Title" formControlName="title" />
+                    <label for="title" >Title</label>
+                    @if (createProductForm.get('title')?.dirty && createProductForm.get('title')?.hasError('required')) {
+                        <div class="invalid-feedback">
+                            Title is required
+                        </div>
+                    }
+                </div>
+
+    
+                <!-- Author form______________________________________________________________________________________________________________-->
+    
+                <div class="form-floating mb-3 text-secondary">
+                    <input
+                        class="form-control" id ='author' type="text" 
+                        [class.is-valid]="createProductForm.get('author')?.valid"
+                        [class.is-invalid]="createProductForm.get('author')?.dirty && createProductForm.get('author')?.invalid"
+                        placeholder="Author" formControlName="author" />
+                    <label for="author">Author</label>
+                    @if (createProductForm.get('author')?.dirty && createProductForm.get('author')?.hasError('required')) {
+                        <div class="invalid-feedback">
+                            Author is required
+                        </div>
+                    }
+                </div>
+
+    
+                <!-- City form________________________________________________________________________________________________________________-->   
+    
+                <div class="form-floating mb-3 text-secondary">
+                    <input
+                        class="form-control" id ='city' type="text" 
+                        [class.is-valid]="createProductForm.get('city')?.valid"
+                        [class.is-invalid]="createProductForm.get('city')?.dirty && createProductForm.get('city')?.invalid"
+                        placeholder="city" formControlName="city" />
+                    <label for="city">Address</label>
+                    @if (createProductForm.get('city')?.dirty && createProductForm.get('city')?.hasError('required')) {
+                        <div class="invalid-feedback">
+                            Address is required
+                        </div>
+                    }
+                </div>
+
+    
+                <!-- Category form___________________________________________________________________________________________________________-->
+    
+                <div class="form-floating mb-3 text-secondary">
+                    <input
+                        class="form-control" id ='category' type="text" 
+                        [class.is-valid]="createProductForm.get('category')?.valid"
+                        [class.is-invalid]="createProductForm.get('category')?.dirty && createProductForm.get('category')?.invalid"
+                        placeholder="Category" formControlName="category"
+                        />
+                    <label for="category">Category</label>
+                </div>
+
+    
+                <!-- Image form______________________________________________________________________________________________________________--> 
+    
+                <div class="form-floating mb-3 text-secondary file">
+                    <input
+                        class="form-control" id ='image' type ="file"  
+                        placeholder="image" formControlName="image"
+                        accept=".jpg,.jpeg,.png,.svg"
+                        (change)="uploadImage($event.target)"/>
+                    <label for="file">Image</label>
+                    @if (createProductForm.get('image')?.dirty && createProductForm.get('image')?.hasError('required')) {
+                        <div class="invalid-feedback">
+                            Image is required
+                        </div>
+                    }
+                </div>
+
+    
+                <!-- Country form____________________________________________________________________________________________________________-->
+    
+                <div class="form-floating mb-3 text-secondary">
+                    <input
+                        class="form-control" id = 'country' type="text" 
+                        [class.is-valid]="createProductForm.get('country')?.valid"
+                        [class.is-invalid]="createProductForm.get('country')?.dirty && createProductForm.get('country')?.invalid"
+                        placeholder="Country" formControlName="country" />
+                    <label for="country">Country</label>
+                    @if (createProductForm.get('country')?.dirty && createProductForm.get('country')?.hasError('required')) {
+                        <div class="invalid-feedback">
+                            Country is required
+                        </div>
+                    }
+                </div>
+
+    
+                <!-- Price form______________________________________________________________________________________________________________-->
+    
+                <div class="form-floating mb-3 text-secondary">
+                    <input
+                        class="form-control" id = 'price' type="text" 
+                        [class.is-valid]="createProductForm.get('price')?.valid"
+                        [class.is-invalid]="createProductForm.get('price')?.dirty && createProductForm.get('price')?.invalid"
+                        placeholder="Price" formControlName="price" />
+                    <label for="price">Price</label>
+                    @if (createProductForm.get('price')?.dirty && createProductForm.get('price')?.hasError('required')) {
+                        <div class="invalid-feedback">
+                            Price is required
+                        </div>
+                    }
+                </div>
+
+    
+                <!-- Description form________________________________________________________________________________________________________-->   
+    
+                <div class="form-floating mb-3 text-secondary">
+                    <div data-mdb-input-init class="form-outline">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea class="form-control" id="description" rows="12"
+                        [class.is-valid]="createProductForm.get('description')?.valid"
+                        [class.is-invalid]="createProductForm.get('description')?.dirty && createProductForm.get('description')?.invalid"
+                        formControlName="description"
+                        ></textarea>
+                    </div>
+                    @if (createProductForm.get('description')?.dirty && createProductForm.get('description')?.hasError('required')) {
+                        <div class="invalid-feedback">
+                            Description is required
+                        </div>
+                    }
+                </div>
+
+
+                <!-- Button to submit________________________________________________________________________________________________________--> 
+
+                <div class="d-grid mt-3">
+                    <button class="btn btn-primary" [disabled]="isCreated || createProductForm.invalid" type="submit">
+                        @if(!isCreated) {
+                            <div>Add</div>
+                        } @else if(isCreated) {
+                            <div class="d-flex align-items-center justify-content-center">
+                                <fa-icon icon="circle-notch" class="me-2" animation="spin"></fa-icon>
+                                <div>Adding in progress</div>
+                            </div>
+                        }
+                    </button>
+                </div>
+
+            </form>
+            
+            @if (flowStatus == 'error' || flowStatus == 'validation-image-error') {
+                <ngb-alert class="d-flex align-items-center justify-content-center mt-3" [dismissible]="false" type="danger">
+                    <fa-icon icon="circle-xmark" class="me-2" size="2x"></fa-icon>
+                    <div>
+                        @if(flowStatus == 'validation-image-error') {
+                            Something is wrong with the image file
+                        }
+                        
+                        @if(flowStatus == 'error') {
+                            Something is wrong when create the product
+                        }
+                    </div>
+                </ngb-alert>
+            }
+
+        </div>
+        <div class="col-md-7">
+            <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                Quaerat fugit totam commodi veniam quo? Et labore ab quam exercitationem, 
+                ducimus quidem repellendus vitae placeat pariatur reprehenderit provident 
+                iste illum architecto.
+            </p>
+        </div>
+    </div>
+</div>

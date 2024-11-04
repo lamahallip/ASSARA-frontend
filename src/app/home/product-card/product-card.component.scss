@@ -1,0 +1,8 @@
+@import './../../assets/scss/bootstrap-variables';
+
+.title, .author {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+

@@ -1,0 +1,6 @@
+<h1 class="mt-3 mb-3">Welcome to market Assara</h1>
+<div class="d-flex flex-wrap">
+    @for (product of allProducts; track product.publicId) {
+        <app-product-card class="card mt-0 ms-0 mb-4 me-4 product-card-background" [product]="product"/>
+    }
+</div>
